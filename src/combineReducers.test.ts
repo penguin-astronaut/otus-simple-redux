@@ -1,11 +1,11 @@
 import { combineReducers } from "./combineReducers";
-import { configureStore, Reducer } from "./configureStore";
+import { configureStore } from "./configureStore";
 
 describe("combineReducers", () => {
   it("returns a reducer based on the config (initial state)", () => {
     const reducer = combineReducers({
-      a: (state = 2, action: any) => state,
-      b: (state = "hop", action: any) => state,
+      a: (state = 2) => state,
+      b: (state = "hop") => state,
     });
     expect(reducer(undefined, { type: "unknown" })).toEqual({
       a: 2,
@@ -14,27 +14,35 @@ describe("combineReducers", () => {
   });
 
   it("calls subreducers with proper values", () => {
-    type State = { counter: number; todos: string[]};
-    const counterReducer = (state: number, action: {type: string, payload?: number}) => {
-      switch(action.type) {
+    const counterReducer = (
+      state: number,
+      action: { type: string; payload?: number }
+    ) => {
+      switch (action.type) {
         case "INCREMENT":
           return state + 1;
         default:
           return state;
       }
-    }
-    const todosReducer = (state: string[], action: {type: string, payload?: string}) => {
-      switch(action.type) {
+    };
+    const todosReducer = (
+      state: string[],
+      action: { type: string; payload?: string }
+    ) => {
+      switch (action.type) {
         case "ADD_TODO":
           return state.concat(action.payload);
         default:
           return state;
       }
-    }
-    const reducer = combineReducers({counter: counterReducer, todos: todosReducer});
-    const store = configureStore(reducer, {counter: 0, todos: []})
-    store.dispatch({type: 'ADD_TODO', payload: 'test'})
-    store.dispatch({type: 'INCREMENT'})
-    expect(store.getState()).toEqual({counter: 1, todos: ['test']})
-  })
+    };
+    const reducer = combineReducers({
+      counter: counterReducer,
+      todos: todosReducer,
+    });
+    const store = configureStore(reducer, { counter: 0, todos: [] });
+    store.dispatch({ type: "ADD_TODO", payload: "test" });
+    store.dispatch({ type: "INCREMENT" });
+    expect(store.getState()).toEqual({ counter: 1, todos: ["test"] });
+  });
 });

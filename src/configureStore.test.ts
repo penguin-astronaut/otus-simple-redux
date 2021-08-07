@@ -1,4 +1,4 @@
-import { configureStore, Reducer } from "./configureStore";
+import { configureStore } from "./configureStore";
 
 describe("configureStore", () => {
   describe("public interface", () => {
@@ -21,43 +21,46 @@ describe("configureStore", () => {
     });
 
     it("calculates new state with reducer call", () => {
-      type State = {counter: number}
-      const reducer = (state: State, action: {type: string, payload?: number}) => {
-        switch(action.type) {
+      type State = { counter: number };
+      const reducer = (
+        state: State,
+        action: { type: string; payload?: number }
+      ) => {
+        switch (action.type) {
           case "INCREMENT":
             return {
               ...state,
-              counter: state.counter + 1
-            }
+              counter: state.counter + 1,
+            };
           case "DECREMENT":
             return {
               ...state,
-              counter: state.counter - 1
-            }
+              counter: state.counter - 1,
+            };
           case "SET":
             return {
               ...state,
-              counter: action.payload
-            }
+              counter: action.payload,
+            };
           case "RESET":
             return {
               ...state,
-              counter: 0
-            }
+              counter: 0,
+            };
           default:
             return state;
         }
-      }
-      const store = configureStore(reducer, {counter: 0});
-      store.dispatch({type: "INCREMENT"});
+      };
+      const store = configureStore(reducer, { counter: 0 });
+      store.dispatch({ type: "INCREMENT" });
       expect(store.getState().counter).toBe(1);
-      store.dispatch({type: "INCREMENT"});
+      store.dispatch({ type: "INCREMENT" });
       expect(store.getState().counter).toBe(2);
-      store.dispatch({type: "DECREMENT"});
+      store.dispatch({ type: "DECREMENT" });
       expect(store.getState().counter).toBe(1);
-      store.dispatch({type: "SET", payload: 12});
+      store.dispatch({ type: "SET", payload: 12 });
       expect(store.getState().counter).toBe(12);
-      store.dispatch({type: "RESET"});
+      store.dispatch({ type: "RESET" });
       expect(store.getState().counter).toBe(0);
     });
 
@@ -91,36 +94,42 @@ describe("configureStore", () => {
     });
 
     it("replace reducer", () => {
-      type State = {counter: number}
-      const reducer = (state: State, action: {type: string, payload?: number}) => {
-        switch(action.type) {
+      type State = { counter: number };
+      const reducer = (
+        state: State,
+        action: { type: string; payload?: number }
+      ) => {
+        switch (action.type) {
           case "INCREMENT":
             return {
               ...state,
-              counter: state.counter + 1
-            }
+              counter: state.counter + 1,
+            };
           default:
             return state;
         }
-      }
+      };
 
-      const reducer2 = (state: State, action: {type: string, payload?: number}) => {
-        switch(action.type) {
+      const reducer2 = (
+        state: State,
+        action: { type: string; payload?: number }
+      ) => {
+        switch (action.type) {
           case "INCREMENT":
             return {
               ...state,
-              counter: state.counter + 2
-            }
+              counter: state.counter + 2,
+            };
           default:
             return state;
         }
-      }
+      };
 
-      const store = configureStore(reducer, {counter: 0});
-      store.dispatch({type: "INCREMENT"});
+      const store = configureStore(reducer, { counter: 0 });
+      store.dispatch({ type: "INCREMENT" });
       expect(store.getState().counter).toBe(1);
-      store.replaceReducer(reducer2)
-      store.dispatch({type: "INCREMENT"});
+      store.replaceReducer(reducer2);
+      store.dispatch({ type: "INCREMENT" });
       expect(store.getState().counter).toBe(3);
     });
   });
