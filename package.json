@@ -1,8 +1,7 @@
 {
-  "name": "otus-calendar-api",
+  "name": "otus-redux",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
     "lint": "prettier --check . && eslint --ext .js, .ts",
