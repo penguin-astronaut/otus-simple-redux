@@ -44,6 +44,8 @@ describe("configureStore", () => {
               ...state,
               counter: 0
             }
+          default:
+            return state;
         }
       }
       const store = configureStore(reducer, {counter: 0});
@@ -97,6 +99,8 @@ describe("configureStore", () => {
               ...state,
               counter: state.counter + 1
             }
+          default:
+            return state;
         }
       }
 
@@ -107,6 +111,8 @@ describe("configureStore", () => {
               ...state,
               counter: state.counter + 2
             }
+          default:
+            return state;
         }
       }
 
