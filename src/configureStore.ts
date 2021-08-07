@@ -1,13 +1,13 @@
+export type Store<State = any, Action = { type: string }> = {
+  getState(): State;
+  dispatch(action: Action): any;
+  subscribe(cb: () => void): () => void;
+};
+
 export type Reducer<State, Action> = (
   state: State | undefined,
   action: Action
 ) => State;
-export type Store<State = any, Action = any> = {
-  getState(): State;
-  dispatch(action: Action): any;
-  subscribe(cb: () => void): () => void;
-  replaceReducer(newReducer: Reducer<State, Action>): void;
-};
 export type ConfigureStore<State, Action> = (
   reducer: Reducer<State, Action>,
   initialState?: State | undefined
@@ -18,7 +18,7 @@ type ArrayCb = (() => void)[];
 export function configureStore<State, Action>(
   reducer: Reducer<State, Action>,
   initialState?: State
-): Store {
+) {
   let state = initialState;
   let subscribeFunctions: ArrayCb = [];
 
@@ -27,7 +27,7 @@ export function configureStore<State, Action>(
       return state;
     },
 
-    dispatch(action: Action): any {
+    dispatch(action: Action): void {
       state = reducer(state, action);
       subscribeFunctions.forEach((cb) => {
         cb();
