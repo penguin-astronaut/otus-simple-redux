@@ -22,10 +22,7 @@
     "lint-staged": "^11.0.1",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
-    "ts-loader": "^9.2.3",
-    "typescript": "^4.3.5",
-    "webpack": "^5.45.1",
-    "webpack-cli": "^4.7.2"
+    "typescript": "^4.3.5"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix --ext .ts,.js",
