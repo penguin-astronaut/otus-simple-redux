@@ -34,6 +34,10 @@ export function configureStore<State, Action>(reducer: Reducer<State, Action>, i
       return () => {
         subscribeFunctions = subscribeFunctions.filter(cbEx => cbEx !== cb)
       }
+    },
+
+    replaceReducer(newReducer: Reducer<State, Action>): void {
+      reducer = newReducer;
     }
   }
 

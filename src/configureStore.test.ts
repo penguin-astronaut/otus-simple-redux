@@ -87,5 +87,35 @@ describe("configureStore", () => {
       store.dispatch(action2);
       expect(spy).toHaveBeenCalledTimes(1);
     });
+
+    it("replace reducer", () => {
+      type State = {counter: number}
+      const reducer = (state: State, action: {type: string, payload?: number}) => {
+        switch(action.type) {
+          case "INCREMENT":
+            return {
+              ...state,
+              counter: state.counter + 1
+            }
+        }
+      }
+
+      const reducer2 = (state: State, action: {type: string, payload?: number}) => {
+        switch(action.type) {
+          case "INCREMENT":
+            return {
+              ...state,
+              counter: state.counter + 2
+            }
+        }
+      }
+
+      const store = configureStore(reducer, {counter: 0});
+      store.dispatch({type: "INCREMENT"});
+      expect(store.getState().counter).toBe(1);
+      store.replaceReducer(reducer2)
+      store.dispatch({type: "INCREMENT"});
+      expect(store.getState().counter).toBe(3);
+    });
   });
 });
