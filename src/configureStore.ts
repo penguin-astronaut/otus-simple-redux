@@ -3,7 +3,7 @@ export type Reducer<State, Action> = (
   action: Action
 ) => State;
 
-type ArrayCb = (() => void)[];
+type SetCb = Set<() => void>;
 
 export interface Action {
   type: string;
@@ -27,7 +27,7 @@ export function configureStore<State>(
   initialState?: State
 ): Store {
   let state = initialState;
-  let subscribeFunctions: ArrayCb = [];
+  const subscribeFunctions: SetCb = new Set();
 
   return {
     getState(): State {
@@ -36,15 +36,15 @@ export function configureStore<State>(
 
     dispatch(action: Action): void {
       state = reducer(state, action);
-      subscribeFunctions.forEach((cb) => {
+      subscribeFunctions?.forEach((cb) => {
         cb();
       });
     },
 
     subscribe(cb: () => void): () => void {
-      subscribeFunctions.push(cb);
+      subscribeFunctions.add(cb);
       return () => {
-        subscribeFunctions = subscribeFunctions.filter((cbEx) => cbEx !== cb);
+        subscribeFunctions.delete(cb);
       };
     },
 
