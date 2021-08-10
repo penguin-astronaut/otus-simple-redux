@@ -1,24 +1,31 @@
-export type Store<State = any, Action = { type: string }> = {
-  getState(): State;
-  dispatch(action: Action): any;
-  subscribe(cb: () => void): () => void;
-};
-
 export type Reducer<State, Action> = (
   state: State | undefined,
   action: Action
 ) => State;
-export type ConfigureStore<State, Action> = (
-  reducer: Reducer<State, Action>,
-  initialState?: State | undefined
-) => Store<State, Action>;
 
 type ArrayCb = (() => void)[];
 
-export function configureStore<State, Action>(
+export interface Action {
+  type: string;
+  [key: string]: any;
+}
+
+export type Store<State = any> = {
+  getState(): State;
+  dispatch(action: Action): any;
+  subscribe(cb: () => void): () => void;
+  replaceReducer(newReducer: Reducer<State, Action>): void;
+};
+
+export type ConfigureStore<State> = (
+  reducer: Reducer<State, Action>,
+  initialState?: State | undefined
+) => Store<State>;
+
+export function configureStore<State>(
   reducer: Reducer<State, Action>,
   initialState?: State
-) {
+): Store {
   let state = initialState;
   let subscribeFunctions: ArrayCb = [];
 

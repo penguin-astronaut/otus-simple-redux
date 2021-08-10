@@ -1,5 +1,5 @@
 import { combineReducers } from "./combineReducers";
-import { configureStore } from "./configureStore";
+import { Action, configureStore } from "./configureStore";
 
 describe("combineReducers", () => {
   it("returns a reducer based on the config (initial state)", () => {
@@ -14,10 +14,7 @@ describe("combineReducers", () => {
   });
 
   it("calls subreducers with proper values", () => {
-    const counterReducer = (
-      state: number,
-      action: { type: string; payload?: number }
-    ) => {
+    const counterReducer = (state: number, action: Action) => {
       switch (action.type) {
         case "INCREMENT":
           return state + 1;
@@ -25,10 +22,7 @@ describe("combineReducers", () => {
           return state;
       }
     };
-    const todosReducer = (
-      state: string[],
-      action: { type: string; payload?: string }
-    ) => {
+    const todosReducer = (state: string[], action: Action) => {
       switch (action.type) {
         case "ADD_TODO":
           return state.concat(action.payload);

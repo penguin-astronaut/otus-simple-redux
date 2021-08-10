@@ -1,4 +1,4 @@
-import { configureStore } from "./configureStore";
+import { Action, configureStore } from "./configureStore";
 
 describe("configureStore", () => {
   describe("public interface", () => {
@@ -22,10 +22,7 @@ describe("configureStore", () => {
 
     it("calculates new state with reducer call", () => {
       type State = { counter: number };
-      const reducer = (
-        state: State,
-        action: { type: string; payload?: number }
-      ) => {
+      const reducer = (state: State, action: Action) => {
         switch (action.type) {
           case "INCREMENT":
             return {
@@ -95,10 +92,7 @@ describe("configureStore", () => {
 
     it("replace reducer", () => {
       type State = { counter: number };
-      const reducer = (
-        state: State,
-        action: { type: string; payload?: number }
-      ) => {
+      const reducer = (state: State, action: Action) => {
         switch (action.type) {
           case "INCREMENT":
             return {
@@ -110,10 +104,7 @@ describe("configureStore", () => {
         }
       };
 
-      const reducer2 = (
-        state: State,
-        action: { type: string; payload?: number }
-      ) => {
+      const reducer2 = (state: State, action: Action) => {
         switch (action.type) {
           case "INCREMENT":
             return {
