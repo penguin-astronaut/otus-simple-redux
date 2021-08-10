@@ -3,7 +3,7 @@ export type Reducer<State, Action> = (
   action: Action
 ) => State;
 
-type SetCb = Set<() => void>;
+type SetCb = Set<(state: any) => void>;
 
 export interface Action {
   type: string;
@@ -13,7 +13,7 @@ export interface Action {
 export type Store<State = any> = {
   getState(): State;
   dispatch(action: Action): any;
-  subscribe(cb: () => void): () => void;
+  subscribe(cb: (state: State) => void): () => void;
   replaceReducer(newReducer: Reducer<State, Action>): void;
 };
 
@@ -37,11 +37,11 @@ export function configureStore<State>(
     dispatch(action: Action): void {
       state = reducer(state, action);
       subscribeFunctions?.forEach((cb) => {
-        cb();
+        cb(state);
       });
     },
 
-    subscribe(cb: () => void): () => void {
+    subscribe(cb: (state: any) => void): () => void {
       subscribeFunctions.add(cb);
       return () => {
         subscribeFunctions.delete(cb);
